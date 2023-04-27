@@ -80,9 +80,9 @@ def fd_backward_heat(Nx, Nt, T, L, sigma):
         u[0,j] = boundary_cond(j*delta_x,L)
         
     # Rekursion
-    for i in range(Nt):  
-        y = U_inv.dot(u[i,:])
-        u[i+1,:] = R_inv.dot(y)
+    for i in range(Nt-1):  
+        y = U_inv.dot(u[:,i])
+        u[:,i+1] = R_inv.dot(y)
     return u
     
        
@@ -105,7 +105,19 @@ ax = plt.axes(projection='3d')
 ax.contour3D(y, z, u1, 1000)
 ax.set_xlabel('t')
 ax.set_ylabel('x')
-ax.set_zlabel('u')
+ax.set_zlabel('u1')
 ax.set_title('Heat equation')
 plt.show()
 
+
+t = np.linspace(0,T,Nt)
+x = np.linspace(0,L,Nx)
+y, z = np.meshgrid(x,t)
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.contour3D(y, z, u2, 1000)
+ax.set_xlabel('t')
+ax.set_ylabel('x')
+ax.set_zlabel('u2')
+ax.set_title('Heat equation')
+plt.show()
