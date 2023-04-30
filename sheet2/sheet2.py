@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import lu
+
 
 from functions import fd_forward_heat, fd_backward_heat, real_sol, get_max_error
 
@@ -19,11 +19,11 @@ for i in range(Nx):
 
 u1 = fd_forward_heat(Nx= Nx, Nt= Nt, T = T, L = L, sigma= 1)
 max_error = get_max_error(delta_x=deltax,u_approx= u1[:,-1],L=L)
-print('Max error of explicit scheme (Nx = 108): ', max_error)
+print('Max error of explicit scheme (Nt = 108): ', max_error)
 
 u2 = fd_backward_heat(Nx, Nt, T, L, sigma = 1)
 max_error = get_max_error(delta_x=deltax,u_approx= u2[:,-1],L=L)
-print('Max error of implicit scheme (Nx = 108): ', max_error)
+print('Max error of implicit scheme (Nt = 108): ', max_error)
 
 figure, ax = plt.subplots(1,1)
 
@@ -34,7 +34,7 @@ ax.contour3D(y, z, u1, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation')
+ax.set_title('Explicit scheme for heat equation (Nt = 108)')
 plt.show()
 
 figure, ax = plt.subplots(1,1)
@@ -47,7 +47,7 @@ ax.contour3D(z, y, u2, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u')
-ax.set_title('Implicit scheme for heat equation')
+ax.set_title('Implicit scheme for heat equation (Nt = 108)')
 plt.show()
 
 
@@ -63,11 +63,11 @@ for i in range(Nx):
 
 u3 = fd_forward_heat(Nx= Nx, Nt= Nt, T = T, L = L, sigma= 1)
 max_error =get_max_error(delta_x=deltax,u_approx= u3[:,-1],L=L)
-print('Max error of explicit scheme (Nx = 150): ', max_error)
+print('Max error of explicit scheme (Nt = 150): ', max_error)
 
 u4 = fd_backward_heat(Nx, Nt, T, L, sigma = 1)
 max_error =get_max_error(delta_x=deltax,u_approx= u4[:,-1],L=L)
-print('Max error of implicit scheme (Nx = 150): ', max_error)
+print('Max error of implicit scheme (Nt = 150): ', max_error)
 
 figure, ax = plt.subplots(1,1)
 y, z = np.meshgrid(x,t)
@@ -77,7 +77,7 @@ ax.contour3D(y, z, u3, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation')
+ax.set_title('Explicit scheme for heat equation (Nt = 150)')
 plt.show()
 
 
@@ -91,5 +91,5 @@ ax.contour3D(z, y, u4, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation')
+ax.set_title('Explicit scheme for heat equation (Nt = 150)')
 plt.show()
