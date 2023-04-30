@@ -62,12 +62,12 @@ def fd_backward_heat(Nx, Nt, T, L, sigma):
     # Matrix B allocation mit dim (N_x, N_x)
     B = np.zeros((Nx-1, Nx-1))
     for i in range(Nx-1):
-        B[i,i] = 1-2*nu
+        B[i,i] = 1+2*nu
         
     for i in range(Nx-2):
-        B[i+1,i] = nu
-        B[i,i+1] = nu
-    
+        B[i+1,i] = -nu
+        B[i,i+1] = -nu
+
     # L U Decomposition, Jetzt "R-U Zerlegung", da L obere Grenze vom State space ist
     # Gleiche dim wie bei B
     U, R = lu(B,permute_l=True)
@@ -90,3 +90,12 @@ def fd_backward_heat(Nx, Nt, T, L, sigma):
     return u
     
        
+def real_sol(t, x):
+    n = 10000
+    u = 0
+
+    for i in range(1,n):
+        u = u + ((-1)**(i))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))/((2*i-1)**2)
+    return (8/np.pi)*u
+
+
