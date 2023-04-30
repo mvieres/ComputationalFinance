@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.linalg import lu
 
 def boundary_cond(x,L):
@@ -98,4 +97,13 @@ def real_sol(t, x):
         u = u + ((-1)**(i))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))/((2*i-1)**2)
     return (8/np.pi)*u
 
-
+def get_max_error(delta_x,u_approx,L):
+    """
+    get error at t = 0.1 for simple heat equation
+    delta_t 
+    """
+    for j in range(len(u_approx)):
+        u_t = real_sol(0.1,L*j/delta_x)
+    diff = abs(u_t - u_approx)
+    error = np.ndarray.max(diff)
+    return error
