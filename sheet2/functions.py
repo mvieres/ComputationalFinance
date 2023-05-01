@@ -97,8 +97,7 @@ def real_sol(t, x):
         u = u + ((-1)**(i-1))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))*((2*i-1)**(-2))
     u = (8/np.pi)*u
 
-    u2 = np.exp(-t)*np.sin(x)
-    return u2
+    return u
 
 def get_max_error(delta_x,u_approx,L):
     """

@@ -21,11 +21,11 @@ for i in range(Nx):
 
 u1 = fd_forward_heat(Nx= Nx, Nt= Nt, T = T, L = L, sigma= 1)
 max_error_u1 = get_max_error(delta_x=deltax,u_approx= u1[:,-1],L=L)
-print('Max error of explicit scheme (Nt = 108): ', max_error_u1)
+print('Max error of explicit scheme (N_t = 108): ', max_error_u1)
 
 u2 = fd_backward_heat(Nx, Nt, T, L, sigma = 1)
 max_error_u2 = get_max_error(delta_x=deltax,u_approx= u2[:,-1],L=L)
-print('Max error of implicit scheme (Nt = 108): ',max_error_u2)
+print('Max error of implicit scheme (N_t = 108): ',max_error_u2)
 
 ax = plt.figure(1)
 
@@ -35,9 +35,9 @@ ax = plt.axes(projection='3d')
 ax.contour3D(y, z, u1, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
-ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation (Nt = 108); error: ' +  str(max_error_u1))
-plt.show()
+ax.set_zlabel('u(t,x)')
+ax.set_title('Explicit scheme for heat equation (N_t = 108); error: ' +  str(max_error_u1))
+
 
 ax = plt.figure(2)
 t = np.linspace(0,T,Nt)
@@ -48,9 +48,9 @@ ax = plt.axes(projection='3d')
 ax.contour3D(z, y, u2, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
-ax.set_zlabel('u')
-ax.set_title('Implicit scheme for heat equation (Nt = 108); error: ' +  str(max_error_u2))
-plt.show()
+ax.set_zlabel('u(t,x)')
+ax.set_title('Implicit scheme for heat equation (N_t = 108); error: ' +  str(max_error_u2))
+
 
 
 Nx = 75
@@ -65,11 +65,11 @@ for i in range(Nx):
 
 u3 = fd_forward_heat(Nx= Nx, Nt= Nt, T = T, L = L, sigma= 1)
 max_error_u3 = get_max_error(delta_x=deltax,u_approx= u3[:,-1],L=L)
-print('Max error of explicit scheme (Nt = 150): ', max_error_u3)
+print('Max error of explicit scheme (N_t = 150): ', max_error_u3)
 
 u4 = fd_backward_heat(Nx, Nt, T, L, sigma = 1)
 max_error_u4 = get_max_error(delta_x=deltax,u_approx= u4[:,-1],L=L)
-print('Max error of implicit scheme (Nt = 150): ', max_error_u4)
+print('Max error of implicit scheme (N_t = 150): ', max_error_u4)
 
 ax = plt.figure(3)
 y, z = np.meshgrid(x,t)
@@ -78,9 +78,8 @@ ax = plt.axes(projection='3d')
 ax.contour3D(y, z, u3, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
-ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation (Nt = 150); error: '  +  str(max_error_u3))
-plt.show()
+ax.set_zlabel('u(t,x)')
+ax.set_title('Explicit scheme for heat equation (N_t = 150); error: '  +  str(max_error_u3))
 
 
 ax = plt.figure(4)
@@ -92,6 +91,6 @@ ax = plt.axes(projection='3d')
 ax.contour3D(z, y, u4, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
-ax.set_zlabel('u1')
-ax.set_title('Explicit scheme for heat equation (Nt = 150); error: ' +  str(max_error_u1))
+ax.set_zlabel('u(t,x)')
+ax.set_title('Implicit scheme for heat equation (N_t = 150); error: ' +  str(max_error_u4))
 plt.show()
