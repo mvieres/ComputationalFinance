@@ -49,7 +49,7 @@ ax.contour3D(z, y, u2, 500)
 ax.set_xlabel('x')
 ax.set_ylabel('t')
 ax.set_zlabel('u')
-ax.set_title('Implicit scheme for heat equation (Nt = 108); error:' +  str(max_error_u2))
+ax.set_title('Implicit scheme for heat equation (Nt = 108); error: ' +  str(max_error_u2))
 plt.show()
 
 
