@@ -78,6 +78,7 @@ def fd_backward_heat(Nx, Nt, T, L, sigma):
     # Allocate U_0
     for j in range(1, Nx):
         u[j,0] = boundary_cond(j*delta_x,L)
+        #u[j,0] = np.sin(j*delta_x)
     # Randbedingungen (fuer t) sind hier egal, da diese konstant 0 sind und mit 0 initialisiert wird
         
     # Rekursion
@@ -95,7 +96,9 @@ def real_sol(t, x):
     for i in range(1,n+1):
         u = u + ((-1)**(i-1))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))*((2*i-1)**(-2))
     u = (8/np.pi)*u
-    return u
+
+    u2 = np.exp(-t)*np.sin(x)
+    return u2
 
 def get_max_error(delta_x,u_approx,L):
     """
