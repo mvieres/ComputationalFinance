@@ -73,13 +73,12 @@ def fd_backward_heat(Nx, Nt, T, L, sigma):
     U_inv = np.linalg.inv(U)
     R_inv = np.linalg.inv(R)
     
-    # qi soll laenge N_x - 1 haben
-   
+
     
     # Allocate U_0
     for j in range(1, Nx):
         u[j,0] = boundary_cond(j*delta_x,L)
-    # Andere randbedingungen (fuer t) sind hier egal, da diese konstant 0 sind und mit 0 initialisiert wird
+    # Randbedingungen (fuer t) sind hier egal, da diese konstant 0 sind und mit 0 initialisiert wird
         
     # Rekursion
     for i in range(Nt-1):  
@@ -93,9 +92,10 @@ def real_sol(t, x):
     n = 10000
     u = 0
 
-    for i in range(1,n):
-        u = u + ((-1)**(i))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))/((2*i-1)**2)
-    return (8/np.pi)*u
+    for i in range(1,n+1):
+        u = u + ((-1)**(i-1))*np.exp((-(2*i-1)**2)*t)*(np.sin((2*i-1)*x))*((2*i-1)**(-2))
+    u = (8/np.pi)*u
+    return u
 
 def get_max_error(delta_x,u_approx,L):
     """
@@ -105,5 +105,5 @@ def get_max_error(delta_x,u_approx,L):
     for j in range(len(u_approx)):
         u_t = real_sol(0.1,L*j/delta_x)
     diff = abs(u_t - u_approx)
-    error = np.ndarray.max(diff)
+    error = diff.max()
     return error
