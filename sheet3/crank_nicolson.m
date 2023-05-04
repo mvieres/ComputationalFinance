@@ -61,5 +61,7 @@ for i = 1:Nt
     U(:,i+1) = R\y;
 end
 % TODO: Randbedingungen für s=0 und s = L;
+
+% Saving inner Points
 X(2:Ns,2:end) = U(:,2:end);
 end
