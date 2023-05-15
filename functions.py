@@ -40,9 +40,10 @@ class Market():
 
 
 class European_Options():
-    def __init__(self,N,K,Assetprice):
+    def __init__(self,n,N,K,Assetprice):
         self.K = K
         self.N = N
+        self.n = n
         self.S = Assetprice
     
     def Arithmetic_asian_call(self):
@@ -55,6 +56,10 @@ class European_Options():
 
 
 # Monte Carlo Methods:
+class Monte_Carlo(European_Options):
+    def __init__(self, n, N, K, Assetprice):
+        super().__init__(n, N, K, Assetprice)
+
 
 def Standard_MC(N,Model,Option):
     market = Market()
