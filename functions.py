@@ -72,7 +72,14 @@ class European_Options():
         return Value
     
     def Call(self):
-        pass
+        """ Standard European Call at maturity T (end point)
+        
+        """
+        Value = np.zeros(shape = (self.N,))
+        for j in range(self.N):
+           Value[j] = np.max(0, self.S[j,-1] - self.K)
+        return Value
+        
     
     def geo_asian_call(self):
         """Computes an European geometric asian call given the underlying asset S and strike price K
