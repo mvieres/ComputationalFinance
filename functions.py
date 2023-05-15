@@ -1,5 +1,6 @@
 import numpy as np  
 from scipy.linalg import lu
+import scipy as sc
 
 class Market():
     def __init__(self,n,N,sigma,mu,r,s0,T):
@@ -52,18 +53,32 @@ class European_Options():
         for j in range(self.N):
            Value[j] = np.max((1/self.n)* np.sum(self.S[j,:]) - self.K , 0) 
         return Value
+    
+    def Call(self):
+        pass
 
 
 
 # Monte Carlo Methods:
-class Monte_Carlo(European_Options):
-    def __init__(self, n, N, K, Assetprice):
-        super().__init__(n, N, K, Assetprice)
+class Monte_Carlo():
+    def __init__(self,N,option_value, alpha,r, T):
+        self.N = N
+        self.ov = option_value
+        self.alpha = alpha
+        self.r = r
+        self.T = T
+        
+    def Standard_MC(self):
+        p_mc = np.exp(-self.r*self.T)*np.mean(self.ov)
+        var_mc = np.var(self.ov)
+        percentile = sc.stats.norm.ppf(1 - 0.5*self.alpha)
+        upper = p_mc + percentile*np.sqrt(var_mc)/self.N
+        lower = p_mc - percentile*np.sqrt(var_mc)/self.N
+        ki = np.array([lower, upper])
+        return p_mc, var_mc, ki
 
 
-def Standard_MC(N,Model,Option):
-    market = Market()
-    return
+
 
 
 
