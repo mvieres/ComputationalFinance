@@ -73,14 +73,25 @@ class European_Options():
     
     def Call(self):
         pass
+    
+    def geo_asian_call(self):
+        """Computes an European geometric asian call given the underlying asset S and strike price K
+
+        Returns:
+            _Array: Value of option
+        """
+        Value = np.zeros(shape=(self.N,))
+        for j in range(self.N):
+           Value[j] = np.max(0, (np.prod(self.S)**(1/self.n)) - self.K) 
+        return Value
 
 
 
 # Monte Carlo Methods:
 class Monte_Carlo():
-    def __init__(self,N,option_value, alpha,r, T):
+    def __init__(self,N,rv, alpha,r, T):
         self.N = N
-        self.ov = option_value
+        self.ov = rv
         self.alpha = alpha
         self.r = r
         self.T = T
@@ -94,6 +105,22 @@ class Monte_Carlo():
             Array: Confidence Interval
         """
         p_mc = np.exp(-self.r*self.T)*np.mean(self.ov)
+        var_mc = np.var(self.ov)
+        percentile = sc.stats.norm.ppf(1 - 0.5*self.alpha)
+        upper = p_mc + percentile*np.sqrt(var_mc)/self.N
+        lower = p_mc - percentile*np.sqrt(var_mc)/self.N
+        ki = np.array([lower, upper])
+        return p_mc, var_mc, ki
+    
+    def SMC(self):
+        """Performes standard Monte Carlo Estimation given N samples of a random variable
+        
+        Returns:
+            Float: estimated expected value
+            Float: Variance of the estimator
+            Array: Confidence Interval
+        """
+        p_mc = np.mean(self.ov)
         var_mc = np.var(self.ov)
         percentile = sc.stats.norm.ppf(1 - 0.5*self.alpha)
         upper = p_mc + percentile*np.sqrt(var_mc)/self.N
