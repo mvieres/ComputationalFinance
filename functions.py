@@ -3,6 +3,9 @@ from scipy.linalg import lu
 import scipy as sc
 
 class Market():
+    """ Creats the market environment.
+        Works for Models driven by a 1-dimensional Brownian Motion.
+    """
     def __init__(self,n,N,sigma,r,s0,T):
         self.n = n
         self.N = N
@@ -15,8 +18,8 @@ class Market():
         """Computes #N Sample paths of brownian motion
 
         Args:
-            n (_type_): _description_
-            N (_type_): _description_
+            n (int): total number of gridpoints --> look time_grid()
+            N (int): total Number of Samples drawn
         """
         t = self.time_grid()
         delta_t = t[1] - t[0]
@@ -26,6 +29,12 @@ class Market():
         return B
     
     def black_scholes(self):
+        """ Creats the Black Scholes Model using the closed Formula
+            S(t) = s_0* exp( (r - 0.5*sigma^2)*t + sigma*W_t)
+
+        Returns:
+            S (Matrix / Array): Assetprice (row -> Samples, columns -> timepoints)
+        """
         t = self.time_grid()
         BB = self.brownian_motion()
         S = np.zeros(shape=(self.N,self.n))
@@ -35,6 +44,11 @@ class Market():
         return S
     
     def time_grid(self):
+        """Creats a time grid given Time Horizon T and total number of points n.
+
+        Returns:
+            Vector / array: timepoints
+        """
         time = np.linspace(0,self.T,self.n)
         return time
 
@@ -47,7 +61,11 @@ class European_Options():
         self.S = Assetprice
     
     def Arithmetic_asian_call(self):
-    
+        """Computes an European Arithmetic asian Call given the underlying asset S and strike price K
+
+        Returns:
+            Vector / Array: Value of the option
+        """
         Value = np.zeros(shape = (self.N,))
         for j in range(self.N):
            Value[j] = np.max((1/self.n)* np.sum(self.S[j,:]) - self.K , 0) 
@@ -68,6 +86,13 @@ class Monte_Carlo():
         self.T = T
         
     def Standard_MC(self):
+        """Performes standard Monte Carlo Estimation given N samples of a random variable
+            Attantion: SMC is 'discounted' with exp(-r*T).
+        Returns:
+            Float: estimated expected value
+            Float: Variance of the estimator
+            Array: Confidence Interval
+        """
         p_mc = np.exp(-self.r*self.T)*np.mean(self.ov)
         var_mc = np.var(self.ov)
         percentile = sc.stats.norm.ppf(1 - 0.5*self.alpha)

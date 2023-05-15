@@ -9,11 +9,11 @@ r = 0.05
 sigma = 0.3
 
 T = 1
-n = 10
+n = 1000
 
+Anzahl_j = 3
 
-
-results = np.zeros(shape=(3,5))
+results = np.zeros(shape=(Anzahl_j,5))
 for j in range(2,5):
     N = 10**j
     start = time.time()
