@@ -3,10 +3,9 @@ from scipy.linalg import lu
 import scipy as sc
 
 class Market():
-    def __init__(self,n,N,sigma,mu,r,s0,T):
+    def __init__(self,n,N,sigma,r,s0,T):
         self.n = n
         self.N = N
-        self.mu = mu
         self.sigma = sigma
         self.r = r
         self.s0 = s0
@@ -32,7 +31,7 @@ class Market():
         S = np.zeros(shape=(self.N,self.n))
         for j in range(self.N):
             for i in range(self.n):
-                S[j,i] = self.s0*np.exp((self.mu - 0.5*(self.sigma**2))*t[i] + self.sigma*BB[j,i])
+                S[j,i] = self.s0*np.exp((self.r - 0.5*(self.sigma**2))*t[i] + self.sigma*BB[j,i])
         return S
     
     def time_grid(self):
