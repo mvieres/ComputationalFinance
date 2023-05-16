@@ -1,4 +1,5 @@
 import numpy as np  
+import random as ran
 from scipy.linalg import lu
 import scipy as sc
 
@@ -42,6 +43,15 @@ class Market():
             for i in range(self.n):
                 S[j,i] = self.s0*np.exp((self.r - 0.5*(self.sigma**2))*t[i] + self.sigma*BB[j,i])
         return S
+    
+    def bs_phi(self,t,x):
+        """performs transformation for time variable t and space Variable x
+
+        Args:
+            t (_type_): _description_
+            x (_type_): _description_
+        """
+        return self.s0*np.exp((self.r - 0.5*self.sigma**2)*t + self.sigma*x)
     
     def time_grid(self):
         """Creats a time grid given Time Horizon T and total number of points n.
@@ -96,12 +106,17 @@ class European_Options():
 
 # Monte Carlo Methods:
 class Monte_Carlo():
-    def __init__(self,N,rv, alpha,r, T):
+    """ Class to perfom different Monte Carlo Estimation for financial options
+        TODO: Dependencies within init are inconsitent --> Move all non essential (global) variables for each estimator to its respective function
+    """
+    def __init__(self,N,rv, alpha,r, T,K):
         self.N = N
         self.ov = rv
         self.alpha = alpha
         self.r = r
         self.T = T
+        self.K = K
+        
         
     def Standard_MC(self):
         """Performes standard Monte Carlo Estimation given N samples of a random variable
@@ -134,6 +149,29 @@ class Monte_Carlo():
         lower = p_mc - percentile*np.sqrt(var_mc)/self.N
         ki = np.array([lower, upper])
         return p_mc, var_mc, ki
+    
+    def Anti_thetic_MC(self,env):
+        """Performs antithetic estimator for geometric brownian motion
+        Uses: Environment --> Asset from Market
+        Has to be called with r = T and 
+        Returns:
+            _type_: _description_
+        """
+        samples = np.zeros(shape=(self.N,))
+        const = 0.5*np.exp(-self.r*self.T)
+        for j in range(self.N):
+            normal_z = np.random.normal(size=(1,))
+            samples[j] = const*(np.max(env.bs_phi(self.T,np.sqrt(self.T)*normal_z) - self.K, 0)+ np.max(env.bs_phi(self.T,-1*np.sqrt(self.T)*normal_z) - self.K, 0))
+        p_mc = np.mean(samples)
+        var_mc = np.var(samples)
+        percentile = sc.stats.norm.ppf(1 - 0.5*self.alpha)
+        upper = p_mc + percentile*np.sqrt(var_mc)/self.N
+        lower = p_mc - percentile*np.sqrt(var_mc)/self.N
+        ki = np.array([lower, upper])
+        return p_mc, var_mc, ki   
+        
+        
+        
 
 
 
